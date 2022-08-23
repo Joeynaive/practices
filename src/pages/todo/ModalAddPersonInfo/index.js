@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Input, message } from 'antd';
 import { phoneNumberReg, emailReg } from '../../../consts/reg';
-import { getUserInfo, postUserInfo, postUser } from '../../../api';
+import { getUserInfo, putUserInfo, postUserInfo } from '../../../api';
 import CommonModal from '../../../components/CommonModal';
 
 import './index.css';
@@ -21,18 +21,20 @@ const ModalAddPersonInfo = (props) => {
   } = props;
 
   function onCloseModal() {
+    close();
+    onClose && onClose();
     form.setFieldsValue({
       userName: '',
       phoneNumber: '',
       email: '',
       personInfo: '',
     })
-  };
+  }
 
-  function onOpen() {
+  function onOpenModal() {
     if(type === 'edit') {
       getUserInfo(uid).then((res) => {
-        const { userName = '', phoneNumber = '', email = '' } = res?.data?.data;
+        const { userName = '', phoneNumber = '', email = '' } = res?.data?.data ?? {};
         form.setFieldsValue({
           userName,
           phoneNumber,
@@ -40,12 +42,12 @@ const ModalAddPersonInfo = (props) => {
         });
       }).catch(() => {});
     }
-  };
+  }
 
-  function clickOk() {
+  function onClickOk() {
     form.validateFields().then(values =>{
       if (type === 'add') {
-        postUser({
+        postUserInfo({
           userName: values.userName, 
           phoneNumber: values.phoneNumber, 
           email: values.email
@@ -55,11 +57,9 @@ const ModalAddPersonInfo = (props) => {
           onSubmitSuccess && onSubmitSuccess();
         }).catch(() => {
           message.error('提交失败');
-        }).finally(() => {
-          onClose && onClose();
-        })
+        });
       } else {
-        postUserInfo({
+        putUserInfo({
           uid: values.uid, 
           userName: values.userName, 
           phoneNumber: values.phoneNumber, 
@@ -70,22 +70,10 @@ const ModalAddPersonInfo = (props) => {
           onSubmitSuccess && onSubmitSuccess();
         }).catch(() => {
           message.error('编辑失败');
-        }).finally(() => {
-          onClose && onClose();
         });
       }
     });
-  };
-
-  function clickCancel() {
-    close();
-    form.setFieldsValue({
-      userName: '',
-      phoneNumber: '',
-      email: '',
-      personInfo: '',
-    })
-  };
+  }
 
   return (
     <CommonModal
@@ -94,9 +82,9 @@ const ModalAddPersonInfo = (props) => {
       okText='确定'
       cancelText='取消'
       visible={visible}
-      onOk={clickOk}
-      onCancel={clickCancel}
-      onOpen={onOpen}
+      onOk={onClickOk}
+      onCancel={onCloseModal}
+      onOpen={onOpenModal}
       onClose={onCloseModal}
     >
       <Form form={form} layout='vertical' >

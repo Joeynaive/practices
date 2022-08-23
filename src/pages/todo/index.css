@@ -19,9 +19,27 @@
 }
 
 .to-do-list__content {
+  display: flex;
+  flex-direction: column;
   width: 800px;
   height: 450px;
   padding: 16px;
   overflow: auto;
   border: 1px solid #eee;
+}
+
+.to-do-list__content-header {
+  display: flex;
+  margin-bottom: 16px;
+}
+
+.to-do-list__content-header-btn {
+  width: 60px;
+  margin-left: 10px;
+}
+
+.to-do-list__content-pagination {
+  display:flex;
+  justify-content: flex-end;
+  margin-top: 16px;
 }

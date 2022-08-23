@@ -46,7 +46,7 @@ export function getUserInfo(uid) {
   })
 }
 
-export function postUserInfo({uid, userName, phoneNumber, email}) {
+export function putUserInfo({uid, userName, phoneNumber, email}) {
   return new Promise((resolve, reject) => {
     const userData = [];
     userData.map(item => {
@@ -70,7 +70,7 @@ export function postUserInfo({uid, userName, phoneNumber, email}) {
   })
 }
 
-export function postUser({userName, phoneNumber, email}) {
+export function postUserInfo({userName, phoneNumber, email}) {
   return new Promise((resolve, reject) => {
     const userData = [];
     userData.push({
