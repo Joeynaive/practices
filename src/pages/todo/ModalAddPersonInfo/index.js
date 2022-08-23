@@ -22,7 +22,7 @@ const ModalAddPersonInfo = (props) => {
         })
       }).catch()
     }
-  }, [visible])
+  }, [visible, type])
 
   function clickOk() {
     close();
@@ -44,6 +44,12 @@ const ModalAddPersonInfo = (props) => {
 
   function clickCancel() {
     close();
+    form.setFieldsValue({
+      userName: '',
+      phoneNumber: '',
+      email: '',
+      personInfo: '',
+    })
   }
 
   return (
