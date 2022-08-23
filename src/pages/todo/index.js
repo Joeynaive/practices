@@ -86,9 +86,9 @@ const App = () => {
   }
 
   function onClickEditButton(record) {
-    setVisible(true);
     setCurrentEditingUid(record.uid);
     setCurrentModalType('edit');
+    setVisible(true);
   }
 
   function onClose() {
@@ -117,8 +117,8 @@ const App = () => {
   }
 
   function onClickAddButton() {
-    setVisible(true);
     setCurrentModalType('add');
+    setVisible(true);
   }
 
   useMount(() => {
