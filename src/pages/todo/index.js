@@ -68,12 +68,12 @@ const App = () => {
       setPageTotal(total);
       setPageSize(perPage);
     }).catch(() => {});
-  };
+  }
 
   function onChangePagination(pNumber, pSize) {
     setPageNumber(pNumber);
     fetchUserData(pNumber, pSize);
-  };
+  }
 
   function onClickDeleteItem(record) {
     Modal.confirm({
@@ -83,17 +83,17 @@ const App = () => {
         setDataSource(newData);
       },
     });
-  };
+  }
 
   function onClickEditButton(record) {
     setVisible(true);
     setCurrentEditingUid(record.uid);
     setCurrentModalType('edit');
-  };
+  }
 
   function onClose() {
     setCurrentEditingUid('');
-  };
+  }
 
   function onClickDeleteRows() {
     deleteUserData(selectedRowKeys).then(res => {
@@ -101,11 +101,11 @@ const App = () => {
       setSelectedRowKeys([]);
       fetchUserData(pageNumber, pageSize);
     }).catch(() => {});
-  };
+  }
 
   function onClickResetButton() {
     fetchUserData(1, pageSize);
-  };
+  }
 
   function onClickSearchButton(value) {
     if (value !== '') {
@@ -114,7 +114,7 @@ const App = () => {
     } else {
       fetchUserData(pageNumber, pageSize);
     }
-  };
+  }
 
   function onClickAddButton() {
     setVisible(true);
@@ -123,7 +123,7 @@ const App = () => {
 
   useMount(() => {
     fetchUserData(pageNumber, pageSize);
-  });
+  })
 
   return (
     <div className="to-do-list">
