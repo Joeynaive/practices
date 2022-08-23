@@ -10,6 +10,7 @@
     "ahooks": "^3.7.0",
     "antd": "4.22.5",
     "react": "^16.14.0",
+    "react-color": "^2.19.3",
     "react-dom": "^16.14.0",
     "react-redux": "^8.0.2",
     "react-scripts": "^4.0.0",

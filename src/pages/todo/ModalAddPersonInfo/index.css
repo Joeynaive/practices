@@ -5,3 +5,16 @@
 .ant-modal-header {
   text-align: center;
 }
+
+.pick-background-color__popover {
+  position: absolute;
+  z-index: 2;
+}
+
+.pick-background-color__cover {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
