@@ -15,25 +15,25 @@ const ListPersonInfo = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageTotal, setPageTotal] = useState(0);
   const [pageSize, setPageSize] = useState(3);
-  const [uid, setUid] = useState(0);
+  const [currentUid, setCurrentUid] = useState(0);
+
+  function fetchUserData(current, perPage) {
+    getUserData(current, perPage).then(res => {
+      setDataSource(res.data.data);
+      setPageNumber(res.data.page);
+      setPageTotal(res.data.total);
+      setPageSize(res.data.perPage);
+    }).catch(() => {});
+  };
 
   useMount(() => {
     fetchUserData(pageNumber, pageSize);
-  })
-
-  function fetchUserData(current, perPage) {
-    getUserData(current, perPage).then(res=> {
-      setDataSource(res?.data?.data);
-      setPageNumber(res?.data?.page);
-      setPageTotal(res?.data?.total);
-      setPageSize(res?.data?.perPage);
-    })
-  }
+  });
 
   function onChangePagination(pNumber, pSize) {
     setPageNumber(pNumber);
     fetchUserData(pNumber, pSize);
-  }
+  };
 
   const columns = [
     {
@@ -55,32 +55,38 @@ const ListPersonInfo = () => {
       title: '编辑',
       render: (_, record) => {
         return (
-          <div onClick={() => edit(record)} style={{ cursor: 'pointer'}}><a>编辑</a></div>
+          <div onClick={() => onEdit(record)} style={{ cursor: 'pointer'}}>
+            <a>编辑</a>
+          </div>
         )
       },
     },
     {
       title: '删除',
-      render: (_, record) => <div onClick={() => handleDelete(record)} style={{ cursor: 'pointer'}}><a>删除</a></div>,
+      render: (_, record) => (
+        <div onClick={() => onDelete(record)} style={{ cursor: 'pointer'}}>
+          <a>删除</a>
+        </div>
+      ),
     },
   ];
 
-  function handleDelete(record) {
+  function onDelete(record) {
     Modal.confirm({
       title: `确定删除${record.userName || ''} ？`,
-      onOk: () => {
+      onOk() {
         const newData = dataSource.filter((item) => item.uid !== record.uid);
         setDataSource(newData);
       },
     });
   };
 
-  function edit(record) {
+  function onEdit(record) {
     setVisible(true);
-    setUid(record.uid);
-  }
+    setCurrentUid(record.uid);
+  };
 
-  const onSelectChange = (newSelectedRowKeys) => {
+  function onSelectChange(newSelectedRowKeys) {
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -94,19 +100,21 @@ const ListPersonInfo = () => {
       message.success('删除成功');
       setSelectedRowKeys([]);
       fetchUserData(pageNumber, pageSize);
-    }).catch(() => {})
-  }
+    }).catch(() => {});
+  };
 
   function reset() {
     fetchUserData(1, pageSize);
-  }
+  };
 
   function search(value) {
     if (value !== '') {
       const newData = dataSource.filter((item) => item.userName === value);
       setDataSource(newData);
+    } else {
+      fetchUserData(pageNumber, pageSize);
     }
-  }
+  };
 
   return (
     <div className='list-person-info'>
@@ -143,9 +151,10 @@ const ListPersonInfo = () => {
       />
       <ModalAddPersonInfo 
         type='edit' 
-        uid={uid} 
+        uid={currentUid} 
         visible={visible} 
         close={() => setVisible(false)} 
+        onSubmitSuccess={() => fetchUserData(pageNumber, pageSize )}
       />
     </div>
   );

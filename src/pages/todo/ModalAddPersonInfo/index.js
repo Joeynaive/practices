@@ -10,37 +10,53 @@ const { TextArea } = Input;
 const ModalAddPersonInfo = (props) => {
   const [form] = Form.useForm();
 
-  const {visible, close, uid, type} = props;
+  const {visible, close, onSubmitSuccess, uid, type} = props;
 
   useEffect(() => {
     if(visible && type === 'edit') {
       getUserInfo(uid).then((res) => {
+        const [userName = '', phoneNumber = '', email = ''] = res?.data?.data;
         form.setFieldsValue({
-          userName: res?.data?.data?.userName,
-          phoneNumber: res?.data?.data?.phoneNumber,
-          email: res?.data?.data?.email,
-        })
-      }).catch()
+          userName,
+          phoneNumber,
+          email,
+        });
+      }).catch(() => {});
     }
-  }, [visible, type])
+  }, [visible]);
 
   function clickOk() {
-    close();
-    form.submit();
-    if (type === 'add') {
-      form.validateFields().then(values =>{
-        postUser({userName: values.userName, phoneNumber: values.phoneNumber, email: values.email}).then((res) => {
+    form.validateFields().then(values =>{
+      if (type === 'add') {
+        postUser({
+          userName: values.userName, 
+          phoneNumber: values.phoneNumber, 
+          email: values.email
+        }).then(() => {
           message.success('提交成功');
-        }).catch(() => {})
-      })
-    } else {
-      form.validateFields().then(values =>{
-        postUserInfo({uid: values.uid, userName: values.userName, phoneNumber: values.phoneNumber, email: values.email}).then((res) => {
-          message.success('编辑成功');
-        }).catch(() => {})
-      })
-    }
-  }
+          close();
+          onSubmitSuccess && onSubmitSuccess();
+        }).catch(() => {
+          message.error('提交失败');
+        });
+      } else {
+        form.validateFields().then(values =>{
+          postUserInfo({
+            uid: values.uid, 
+            userName: values.userName, 
+            phoneNumber: values.phoneNumber, 
+            email: values.email
+          }).then(() => {
+            message.success('编辑成功');
+            close();
+            onSubmitSuccess && onSubmitSuccess();
+          }).catch(() => {
+            message.error('编辑失败');
+          })
+        })
+      }
+    });
+  };
 
   function clickCancel() {
     close();
@@ -50,7 +66,7 @@ const ModalAddPersonInfo = (props) => {
       email: '',
       personInfo: '',
     })
-  }
+  };
 
   return (
     <Modal
