@@ -4,6 +4,10 @@
   height: 450px;
 }
 
+.list-person-info > .ant-table-wrapper {
+  margin-bottom: 16px;
+}
+
 .list-person-info__header {
   display: flex;
   margin-bottom: 16px;
