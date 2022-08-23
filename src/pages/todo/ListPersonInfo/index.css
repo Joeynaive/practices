@@ -1,0 +1,21 @@
+.list-person-info {
+  display: flex;
+  flex-direction: column;
+  height: 450px;
+}
+
+.list-person-info__header {
+  display: flex;
+  margin-bottom: 16px;
+}
+
+.list-person-info__header-btn {
+  width: 60px;
+  margin-left: 10px;
+}
+
+.list-person-info__pagination {
+  display:flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
