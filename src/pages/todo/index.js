@@ -107,7 +107,7 @@ const App = () => {
     fetchUserData(1, pageSize);
   };
 
-  function search(value) {
+  function onClickSearchButton(value) {
     if (value !== '') {
       const newData = dataSource.filter((item) => item.userName === value);
       setDataSource(newData);
@@ -133,7 +133,7 @@ const App = () => {
           <Search 
             placeholder="请输入姓名" 
             allowClear 
-            onSearch={search} 
+            onSearch={onClickSearchButton} 
             style={{ width: 200 }} />
           <Button className='to-do-list__content-header-btn' onClick={onClickResetButton}>
             重置
