@@ -48,6 +48,7 @@ export function getUserInfo(uid) {
 
 export function postUserInfo({uid, userName, phoneNumber, email}) {
   return new Promise((resolve, reject) => {
+    const userData = [];
     userData.map(item => {
       if (item.uid === uid) {
         item.userName = userName;

@@ -16,13 +16,20 @@ const ListPersonInfo = () => {
   const [pageTotal, setPageTotal] = useState(0);
   const [pageSize, setPageSize] = useState(3);
   const [currentUid, setCurrentUid] = useState(0);
+  const [currentType, setCurrentType] = useState('');
 
   function fetchUserData(current, perPage) {
     getUserData(current, perPage).then(res => {
-      setDataSource(res.data.data);
-      setPageNumber(res.data.page);
-      setPageTotal(res.data.total);
-      setPageSize(res.data.perPage);
+      const { 
+        data = [], 
+        page = 1, 
+        total = 0, 
+        perPage = 3 
+      } = res?.data;
+      setDataSource(data);
+      setPageNumber(page);
+      setPageTotal(total);
+      setPageSize(perPage);
     }).catch(() => {});
   };
 
@@ -84,6 +91,11 @@ const ListPersonInfo = () => {
   function onEdit(record) {
     setVisible(true);
     setCurrentUid(record.uid);
+    setCurrentType('edit');
+  };
+
+  function onClose() {
+    setCurrentUid('');
   };
 
   function onSelectChange(newSelectedRowKeys) {
@@ -116,47 +128,62 @@ const ListPersonInfo = () => {
     }
   };
 
+  function add() {
+    setVisible(true);
+    setCurrentType('add');
+  }
+
   return (
-    <div className='list-person-info'>
-      <div className='list-person-info__header'>
-        <Search placeholder="请输入姓名" allowClear onSearch={search} style={{ width: 200 }} />
-        <Button className='list-person-info__header-btn' onClick={reset}>
-          重置
-        </Button>
-        <Button className='list-person-info__header-btn' type="primary" onClick={deleteSelect}>
-          删除
-        </Button>
+    <>
+      <div className='list-person-info'>
+        <div className='list-person-info__header'>
+          <Search 
+            placeholder="请输入姓名" 
+            allowClear 
+            onSearch={search} 
+            style={{ width: 200 }} />
+          <Button className='list-person-info__header-btn' onClick={reset}>
+            重置
+          </Button>
+          <Button className='list-person-info__header-btn' type="primary" onClick={deleteSelect}>
+            删除
+          </Button>
+          <Button className='list-person-info__header-btn' type="primary" onClick={add}>
+            添加
+          </Button>
+        </div>
+        <Table 
+          size='small'
+          rowKey="uid"
+          pagination={false}
+          rowSelection={rowSelection} 
+          columns={columns} 
+          dataSource={dataSource}
+        />
+        <Pagination 
+          className='list-person-info__pagination'
+          size='small'
+          current={pageNumber}
+          pageSize={pageSize}
+          total={pageTotal}
+          onChange={onChangePagination}
+          defaultCurrent={1}
+          defaultPageSize={5}
+          pageSizeOptions={['3', '5', '8', '10']}
+          showTotal={(total) => `共${total}条`}
+          showSizeChanger
+          showQuickJumper
+        />
       </div>
-      <Table 
-        size='small'
-        rowKey="uid"
-        pagination={false}
-        rowSelection={rowSelection} 
-        columns={columns} 
-        dataSource={dataSource} 
-      />
-      <Pagination 
-        className='list-person-info__pagination'
-        size='small'
-        current={pageNumber}
-        pageSize={pageSize}
-        total={pageTotal}
-        onChange={onChangePagination}
-        defaultCurrent={1}
-        defaultPageSize={5}
-        pageSizeOptions={['3', '5', '8', '10']}
-        showTotal={(total) => `共${total}条`}
-        showSizeChanger
-        showQuickJumper
-      />
       <ModalAddPersonInfo 
-        type='edit' 
+        type={currentType} 
         uid={currentUid} 
         visible={visible} 
         close={() => setVisible(false)} 
-        onSubmitSuccess={() => fetchUserData(pageNumber, pageSize )}
+        onClose={onClose}
+        onSubmitSuccess={() => fetchUserData(pageNumber, pageSize)}
       />
-    </div>
+    </>
   );
 };
 
