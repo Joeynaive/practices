@@ -10,7 +10,6 @@ const { TextArea } = Input;
 
 const ModalAddPersonInfo = (props) => {
   const [form] = Form.useForm();
-
   const { 
     visible, 
     close, 
@@ -32,7 +31,7 @@ const ModalAddPersonInfo = (props) => {
   }
 
   function onOpenModal() {
-    if(type === 'edit') {
+    if (type === 'edit') {
       getUserInfo(uid).then((res) => {
         const { userName = '', phoneNumber = '', email = '' } = res?.data?.data ?? {};
         form.setFieldsValue({
