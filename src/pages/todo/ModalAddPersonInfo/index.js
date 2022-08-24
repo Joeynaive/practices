@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Input, message, Select, Switch, Button, Radio } from 'antd';
+import { Form, Input, message, Select, Switch, Button, Radio, Checkbox } from 'antd';
 import { SketchPicker } from 'react-color'
 import { phoneNumberReg, emailReg } from '../../../consts/reg';
 import { getUserInfo, putUserInfo, postUserInfo } from '../../../api';
@@ -12,7 +12,18 @@ const { TextArea } = Input;
 const radioMap = [
   {key: '0', value: 0, label: 'input'},
   {key: '1', value: 1, label: 'select'},
-]
+];
+const selectMap = [
+  {key: '0', value: 0, label: '家'},
+  {key: '1', value: 1, label: '公司'},
+  {key: '2', value: 2, label: '超市'},
+];
+const checkBoxMap = [
+  {key: '0', value: 0, label: '家'},
+  {key: '1', value: 1, label: '公司'},
+  {key: '2', value: 2, label: '超市'},
+  {key: '3', value: 3, label: '公园'},
+];
 
 const ModalAddPersonInfo = (props) => {
   const [form] = Form.useForm();
@@ -35,6 +46,9 @@ const ModalAddPersonInfo = (props) => {
       personInfo: '',
       picker: '',
       switch: false,
+      input: '',
+      radio: 0,
+      checkBox: [0, 1],
     })
   }
 
@@ -86,20 +100,20 @@ const ModalAddPersonInfo = (props) => {
     setCurrentRadio(e.target.value);
   }
 
-  const Picker = ({ value, onChange }) => {
+  const ColorPicker = ({ value, onChange }) => {
     const [showPicker, setShowPicker] = useState(false);
 
     function onChangeColor(_color) {
-      onChange?.(_color.hex);
+      onChange && onChange(_color.hex);
     }
 
     return (
       <>
-        <Button style={{ backgroundColor: `${value}`}} onClick={() => setShowPicker(true)}> 点我更换颜色 </Button>
+        <Button style={{ backgroundColor: value }} onClick={() => setShowPicker(true)}> 点我更换颜色 </Button>
         {showPicker ? (
           <div className="pick-background-color__popover">
             <div className="pick-background-color__cover" onClick={() => setShowPicker(false)} />
-            <SketchPicker color={value || ''} onChange={onChangeColor} />
+            <SketchPicker color={value} onChange={onChangeColor} />
           </div>
         ) : null}
       </>
@@ -118,7 +132,13 @@ const ModalAddPersonInfo = (props) => {
       onOpen={onOpenModal}
       onClose={onCloseModal}
     >
-      <Form form={form} layout='vertical' >
+      <Form 
+        form={form} 
+        layout='vertical' 
+        initialValues={{
+          select: 0,
+        }}
+      >
         <Form.Item
           name='userName'
           label='姓名'
@@ -152,14 +172,20 @@ const ModalAddPersonInfo = (props) => {
         <Form.Item name='switch' valuePropName="checked" label='开关' >
           <Switch />
         </Form.Item>
-        <Form.Item name='picker' label='颜色选择' >
-          <Picker />
+        <Form.Item name='checkBox' label='多选' >
+          <Checkbox.Group>
+            {checkBoxMap.map(item => {
+              return (
+                <Checkbox key={item.key} value={item.value}>{item.label}</Checkbox>
+              )
+            })}
+          </Checkbox.Group>
         </Form.Item>
-        <Form.Item>
-          <Radio.Group
-            onChange={onChangeRadio}
-            value={currentRadio}  
-          >
+        <Form.Item name='picker' label='颜色选择' >
+          <ColorPicker />
+        </Form.Item>
+        <Form.Item name='radio'>
+          <Radio.Group onChange={onChangeRadio}>
             {radioMap.map(item => {
               return (
                 <Radio value={item.value} key={item.key}>{item.label}</Radio>
@@ -175,7 +201,11 @@ const ModalAddPersonInfo = (props) => {
         {currentRadio === 1 && (
           <Form.Item name='select'>
             <Select>
-              <Select.Option value="1">111</Select.Option>
+              {selectMap.map(item => {
+                return (
+                  <Select.Option key={item.key} value={item.value}>{item.label}</Select.Option>
+                )
+              })}
             </Select>
           </Form.Item>
         )}
