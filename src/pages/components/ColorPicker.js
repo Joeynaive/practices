@@ -11,7 +11,7 @@ const ColorPicker = ({ value, onChange }) => {
 
   return (
     <>
-      <Button style={{ backgroundColor: value }} onClick={() => setShowPicker(true)}> 点我更换颜色 </Button>
+      <Button style={{ backgroundColor: value }} onClick={() => setShowPicker(true)}>点我更换颜色</Button>
       {showPicker ? (
         <div className="pick-background-color__popover">
           <div className="pick-background-color__cover" onClick={() => setShowPicker(false)} />
