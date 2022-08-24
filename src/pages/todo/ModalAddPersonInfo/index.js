@@ -4,7 +4,7 @@ import { phoneNumberReg, emailReg } from '../../../consts/reg';
 import { radioMap, selectMap, checkBoxMap } from '../../../consts/person';
 import { getUserInfo, putUserInfo, postUserInfo } from '../../../api';
 import CommonModal from '../../../components/CommonModal';
-import ColorPicker from '../../components/ColorPicker';
+import ColorPicker from '../../../components/ColorPicker';
 
 import './index.css';
 
