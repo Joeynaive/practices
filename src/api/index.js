@@ -46,7 +46,7 @@ export function getUserInfo(uid) {
   })
 }
 
-export function putUserInfo({uid, userName, phoneNumber, email}) {
+export function putUserInfo({ uid, userName, phoneNumber, email, switchButton, radio, checkBox, picker, input, select }) {
   return new Promise((resolve, reject) => {
     const userData = [];
     userData.map(item => {
@@ -54,6 +54,12 @@ export function putUserInfo({uid, userName, phoneNumber, email}) {
         item.userName = userName;
         item.phoneNumber = phoneNumber;
         item.email = email;
+        item.switchButton = switchButton;
+        item.radio = radio;
+        item.checkBox = checkBox;
+        item.picker = picker;
+        item.input = input;
+        item.select = select;
       } else {
         return;
       }
@@ -70,13 +76,19 @@ export function putUserInfo({uid, userName, phoneNumber, email}) {
   })
 }
 
-export function postUserInfo({userName, phoneNumber, email}) {
+export function postUserInfo({ userName, phoneNumber, email, switchButton, radio, checkBox, picker, input, select }) {
   return new Promise((resolve, reject) => {
     const userData = [];
     userData.push({
       userName,
       phoneNumber,
       email,
+      switchButton,
+      radio,
+      checkBox,
+      picker,
+      input,
+      select,
     })
     setTimeout(() => {
       return resolve({

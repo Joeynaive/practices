@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Form, Input, message, Select, Switch, Button, Radio, Checkbox } from 'antd';
-import { SketchPicker } from 'react-color'
 import { phoneNumberReg, emailReg } from '../../../consts/reg';
 import { radioMap, selectMap, checkBoxMap } from '../../../consts/person';
 import { getUserInfo, putUserInfo, postUserInfo } from '../../../api';
 import CommonModal from '../../../components/CommonModal';
+import ColorPicker from '../../components/ColorPicker';
 
 import './index.css';
 
@@ -56,7 +56,13 @@ const ModalAddPersonInfo = (props) => {
         postUserInfo({
           userName: values.userName, 
           phoneNumber: values.phoneNumber, 
-          email: values.email
+          email: values.email,
+          switchButton: values.switch,
+          radio: values.radio,
+          checkBox: values.checkBox,
+          picker: values.picker,
+          input: values.input,
+          select: values.select,
         }).then(() => {
           message.success('提交成功');
           close();
@@ -69,7 +75,13 @@ const ModalAddPersonInfo = (props) => {
           uid: values.uid, 
           userName: values.userName, 
           phoneNumber: values.phoneNumber, 
-          email: values.email
+          email: values.email,
+          switchButton: values.switch,
+          radio: values.radio,
+          checkBox: values.checkBox,
+          picker: values.picker,
+          input: values.input,
+          select: values.select,
         }).then(() => {
           message.success('编辑成功');
           close();
@@ -83,26 +95,6 @@ const ModalAddPersonInfo = (props) => {
 
   function onChangeRadio(e) {
     setCurrentRadio(e.target.value);
-  }
-
-  const ColorPicker = ({ value, onChange }) => {
-    const [showPicker, setShowPicker] = useState(false);
-
-    function onChangeColor(_color) {
-      onChange && onChange(_color.hex);
-    }
-
-    return (
-      <>
-        <Button style={{ backgroundColor: value }} onClick={() => setShowPicker(true)}> 点我更换颜色 </Button>
-        {showPicker ? (
-          <div className="pick-background-color__popover">
-            <div className="pick-background-color__cover" onClick={() => setShowPicker(false)} />
-            <SketchPicker color={value} onChange={onChangeColor} />
-          </div>
-        ) : null}
-      </>
-    )
   }
 
   return (
