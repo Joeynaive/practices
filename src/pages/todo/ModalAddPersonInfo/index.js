@@ -2,28 +2,13 @@ import React, { useState } from 'react';
 import { Form, Input, message, Select, Switch, Button, Radio, Checkbox } from 'antd';
 import { SketchPicker } from 'react-color'
 import { phoneNumberReg, emailReg } from '../../../consts/reg';
+import { radioMap, selectMap, checkBoxMap } from '../../../consts/person';
 import { getUserInfo, putUserInfo, postUserInfo } from '../../../api';
 import CommonModal from '../../../components/CommonModal';
 
 import './index.css';
 
 const { TextArea } = Input;
-
-const radioMap = [
-  {key: '0', value: 0, label: 'input'},
-  {key: '1', value: 1, label: 'select'},
-];
-const selectMap = [
-  {key: '0', value: 0, label: '家'},
-  {key: '1', value: 1, label: '公司'},
-  {key: '2', value: 2, label: '超市'},
-];
-const checkBoxMap = [
-  {key: '0', value: 0, label: '家'},
-  {key: '1', value: 1, label: '公司'},
-  {key: '2', value: 2, label: '超市'},
-  {key: '3', value: 3, label: '公园'},
-];
 
 const ModalAddPersonInfo = (props) => {
   const [form] = Form.useForm();
