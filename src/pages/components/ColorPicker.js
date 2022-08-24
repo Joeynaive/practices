@@ -22,4 +22,4 @@ const ColorPicker = ({ value, onChange }) => {
   )
 }
 
-export default ColorPicker;
+export default React.memo(ColorPicker);
