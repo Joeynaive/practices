@@ -22,6 +22,17 @@ const ModalAddPersonInfo = (props) => {
     type 
   } = props;
 
+  /*
+   * 主动关闭弹窗
+   */
+  function onCloseActive() {
+    close && close();
+    onCloseModal();
+  }
+
+  /*
+   * 关闭弹窗时清空数据
+   */
   function onCloseModal() {
     onClose && onClose();
     form.setFieldsValue({
@@ -65,7 +76,7 @@ const ModalAddPersonInfo = (props) => {
           select: values.select,
         }).then(() => {
           message.success('提交成功');
-          close();
+          onCloseActive();
           onSubmitSuccess && onSubmitSuccess();
         }).catch(() => {
           message.error('提交失败');
@@ -84,7 +95,7 @@ const ModalAddPersonInfo = (props) => {
           select: values.select,
         }).then(() => {
           message.success('编辑成功');
-          close();
+          onCloseActive();
           onSubmitSuccess && onSubmitSuccess();
         }).catch(() => {
           message.error('编辑失败');
@@ -105,7 +116,7 @@ const ModalAddPersonInfo = (props) => {
       cancelText='取消'
       visible={visible}
       onOk={onClickOk}
-      onCancel={close}
+      onCancel={onCloseActive}
       onOpen={onOpenModal}
       onClose={onCloseModal}
     >
